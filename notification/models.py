@@ -20,13 +20,14 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 QUEUE_ALL = getattr(settings, "NOTIFICATION_QUEUE_ALL", False)
 
 
 class LanguageStoreNotAvailable(Exception):
     pass
+
 
 class NoticeType(models.Model):
 
@@ -52,7 +53,7 @@ NOTICE_MEDIA = (
 
 # how spam-sensitive is the medium
 NOTICE_MEDIA_DEFAULTS = {
-    "1": 2 # email
+    "1": 2  # email
 }
 
 class NoticeSetting(models.Model):
@@ -392,7 +393,7 @@ class ObservedItem(models.Model):
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    observed_object = generic.GenericForeignKey("content_type", "object_id")
+    observed_object = GenericForeignKey("content_type", "object_id")
 
     notice_type = models.ForeignKey(NoticeType, verbose_name=_("notice type"))
 
